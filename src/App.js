@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends React.Component {
@@ -27,11 +26,6 @@ class App extends React.Component {
   };
 
   handleCount = () => () => {
-    const { values } = this.state;
-    const { jumlahPinjaman, lamaPembayaran, bungaPinjaman } = values;
-    const bungaTemp = jumlahPinjaman * (bungaPinjaman / 100);
-    console.info('bungaTemp : ', bungaTemp);
-    
     this.setState(prevState => ({
       ...prevState,
       result: {
@@ -47,11 +41,12 @@ class App extends React.Component {
 
   renderColumn = () => {
     const { result } = this.state;
+    const { lamaPembayaran, bungaPinjaman, jumlahPinjaman } = result;
     const arrayOfRow = [];
     arrayOfRow.push(
       <tr>
         <td></td>
-        <td>Saldo Awal</td>
+        <td></td>
         <td></td>
         <td></td>
         <td>{result.jumlahPinjaman}</td>
@@ -59,24 +54,29 @@ class App extends React.Component {
       </tr>
     );
   
+    let jumlahPinjamanSisa = jumlahPinjaman;
     for (let i = 1; i <= result.lamaPembayaran; i += 1) {
+      const angsuranPokok = 100 * Math.ceil((Math.floor(jumlahPinjaman / lamaPembayaran) / 100));
+      const bungaAngsuran = 100 * Math.ceil((Math.floor(jumlahPinjamanSisa * (bungaPinjaman / 100)) / 100));
+      const totalAngsuran = Number(angsuranPokok + bungaAngsuran);
+      jumlahPinjamanSisa = Number(jumlahPinjamanSisa - angsuranPokok);
       arrayOfRow.push(
         <tr>
           <td>{i}</td>
           <td>
-            500000
+            {totalAngsuran}
           </td>
           <td>
-            500000
+            {bungaAngsuran}
           </td>
           <td>
-            500000
+            {angsuranPokok}
           </td>
           <td>
-            500000
+            {jumlahPinjamanSisa < 0 ? 0 : jumlahPinjamanSisa}
           </td>
         </tr>
-      )
+      );
     }
 
     return arrayOfRow;
@@ -88,28 +88,40 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="field">
-          <label style={{ marginRight: '10px' }}>Jumlah Pinjaman</label>
-          <input
-            type="number"
-            value={values.totalPinjaman}
-            onChange={this.handleFieldChange('jumlahPinjaman')}
-          />
+          <div style={{ width: '30%' }}>
+            <label style={{ marginRight: '10px' }}>Jumlah Pinjaman</label>
+          </div>
+          <div style={{ width: '30%' }}>
+            <input
+              type="number"
+              value={values.totalPinjaman}
+              onChange={this.handleFieldChange('jumlahPinjaman')}
+            />
+          </div>
         </div>
         <div className="field">
-          <label style={{ marginRight: '10px' }}>Lama Pembayaran</label>
-          <input
-            type="number"
-            value={values.totalPinjaman}
-            onChange={this.handleFieldChange('lamaPembayaran')}
-          />
+          <div style={{ width: '30%' }}>
+            <label style={{ marginRight: '10px' }}>Lama Pembayaran</label>
+          </div>
+          <div style={{ width: '30%' }}>
+            <input
+              type="number"
+              value={values.totalPinjaman}
+              onChange={this.handleFieldChange('lamaPembayaran')}
+            />
+          </div>
         </div>
         <div className="field">
-          <label style={{ marginRight: '10px' }}>Bunga Pinjaman</label>
-          <input
-            type="number"
-            value={values.totalPinjaman}
-            onChange={this.handleFieldChange('bungaPinjaman')}
-          />
+          <div style={{ width: '30%' }}>
+            <label style={{ marginRight: '10px' }}>Bunga Pinjaman</label>
+          </div>
+          <div style={{ width: '30%' }}>
+            <input
+              type="number"
+              value={values.totalPinjaman}
+              onChange={this.handleFieldChange('bungaPinjaman')}
+            />
+          </div>
         </div>
         <div className="button">
           <input type="submit" value="Hitung" onClick={this.handleCount()}/>
