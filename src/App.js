@@ -15,7 +15,8 @@ class App extends React.Component {
     },
     table: {
       isHide: true
-    }
+    },
+    type: 'tetap'
   }
 
   handleFieldChange = field => (e) => {
@@ -39,8 +40,16 @@ class App extends React.Component {
     }));
   }
 
+  handleTypeChange = (e) => {
+    const { value } = e.target;
+    this.setState(prevState => ({
+      ...prevState,
+      type: value
+    }))
+  }
+
   renderColumn = () => {
-    const { result } = this.state;
+    const { result, type } = this.state;
     const { lamaPembayaran, bungaPinjaman, jumlahPinjaman } = result;
     const arrayOfRow = [];
     arrayOfRow.push(
@@ -57,7 +66,7 @@ class App extends React.Component {
     let jumlahPinjamanSisa = jumlahPinjaman;
     for (let i = 1; i <= result.lamaPembayaran; i += 1) {
       const angsuranPokok = 100 * Math.ceil((Math.floor(jumlahPinjaman / lamaPembayaran) / 100));
-      const bungaAngsuran = 100 * Math.ceil((Math.floor(jumlahPinjamanSisa * (bungaPinjaman / 100)) / 100));
+      const bungaAngsuran = 100 * Math.ceil((Math.floor(type === 'menurun' ? jumlahPinjamanSisa : jumlahPinjaman * (bungaPinjaman / 100)) / 100));
       const totalAngsuran = Number(angsuranPokok + bungaAngsuran);
       jumlahPinjamanSisa = Number(jumlahPinjamanSisa - angsuranPokok);
       arrayOfRow.push(
@@ -121,6 +130,17 @@ class App extends React.Component {
               value={values.totalPinjaman}
               onChange={this.handleFieldChange('bungaPinjaman')}
             />
+          </div>
+        </div>
+        <div className="field">
+          <div style={{ width: '30%' }}>
+            <label style={{ marginRight: '10px' }}>Tipe Pinjaman</label>
+          </div>
+          <div style={{ width: '30%' }}>
+            <select onChange={this.handleTypeChange} value={this.state.type}>
+              <option value="tetap">Tetap</option>
+              <option value="menurun">Bunga Menurun</option>
+            </select>
           </div>
         </div>
         <div className="button">
