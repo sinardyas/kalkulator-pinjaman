@@ -1,6 +1,15 @@
 import React from 'react';
 import './App.css';
 
+
+const formatCurrency = (value) => {
+  const newFormat = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'IDR'
+  });
+
+  return newFormat.format(value);
+};
 class App extends React.Component {
   state = {
     values: {
@@ -58,8 +67,7 @@ class App extends React.Component {
         <td></td>
         <td></td>
         <td></td>
-        <td>{result.jumlahPinjaman}</td>
-        <td></td>
+        <td>{formatCurrency(result.jumlahPinjaman)}</td>
       </tr>
     );
   
@@ -73,16 +81,16 @@ class App extends React.Component {
         <tr>
           <td>{i}</td>
           <td>
-            {totalAngsuran}
+            {formatCurrency(totalAngsuran)}
           </td>
           <td>
-            {bungaAngsuran}
+            {formatCurrency(bungaAngsuran)}
           </td>
           <td>
-            {angsuranPokok}
+            {formatCurrency(angsuranPokok)}
           </td>
           <td>
-            {jumlahPinjamanSisa < 0 ? 0 : jumlahPinjamanSisa}
+            {formatCurrency(jumlahPinjamanSisa< 0 ? 0 : jumlahPinjamanSisa)}
           </td>
         </tr>
       );
