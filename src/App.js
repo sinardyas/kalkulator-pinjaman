@@ -81,13 +81,13 @@ class App extends React.Component {
         <tr>
           <td>{i}</td>
           <td>
-            {formatCurrency(totalAngsuran)}
+            {formatCurrency(angsuranPokok)}
           </td>
           <td>
             {formatCurrency(bungaAngsuran)}
           </td>
           <td>
-            {formatCurrency(angsuranPokok)}
+            {formatCurrency(totalAngsuran)}
           </td>
           <td>
             {formatCurrency(jumlahPinjamanSisa< 0 ? 0 : jumlahPinjamanSisa)}
@@ -155,13 +155,13 @@ class App extends React.Component {
           <input type="submit" value="Hitung" onClick={this.handleCount()}/>
         </div>
         <table className={isHide ? 'Table-kredit hide': 'Table-kredit'}>
-          <caption>Kalkulator Kredit Bunga Tetap</caption>
+          <caption>Kalkulator Kredit Balas Jasa {this.state.type === 'tetap' ? 'Tetap' : 'Menurun'}</caption>
           <tbody>
             <tr>
               <th>Bulan</th>
-              <th>Angsuran Pinjaman</th>
-              <th>Bunga</th>
               <th>Angsuran Pokok</th>
+              <th>Balas Jasa Pinjaman</th>
+              <th>Jumlah Angsuran</th>
               <th>Sisa Pinjaman</th>
             </tr>
             {this.renderColumn()}
