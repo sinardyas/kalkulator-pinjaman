@@ -8,7 +8,7 @@ const formatCurrency = (value) => {
     currency: 'IDR'
   });
 
-  return newFormat.format(value);
+  return newFormat.format(value).replace('.00', '');
 };
 class App extends React.Component {
   state = {
@@ -74,9 +74,9 @@ class App extends React.Component {
     let jumlahPinjamanSisa = jumlahPinjaman;
     for (let i = 1; i <= result.lamaPembayaran; i += 1) {
       const angsuranPokok = 100 * Math.ceil((Math.floor(jumlahPinjaman / lamaPembayaran) / 100));
-      const bungaAngsuran = 100 * Math.ceil((Math.floor(type === 'menurun' ? jumlahPinjamanSisa : jumlahPinjaman * (bungaPinjaman / 100)) / 100));
-      const totalAngsuran = Number(angsuranPokok + bungaAngsuran);
+      const bungaAngsuran = 100 * Math.ceil((Math.floor(type === 'menurun' ? jumlahPinjamanSisa * (bungaPinjaman / 100) : jumlahPinjaman * (bungaPinjaman / 100)) / 100));
       jumlahPinjamanSisa = Number(jumlahPinjamanSisa - angsuranPokok);
+      const totalAngsuran = Number(angsuranPokok + bungaAngsuran);
       arrayOfRow.push(
         <tr>
           <td>{i}</td>
